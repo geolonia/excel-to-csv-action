@@ -1,15 +1,10 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 334:
+/***/ 321:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const core = __nccwpck_require__(540);
-const { writeFile } = __nccwpck_require__(292);
-const klaw = __nccwpck_require__(370);
-const { basename, dirname, join } = __nccwpck_require__(17);
 const XLSX = __nccwpck_require__(187);
-const inputDir = core.getInput('input_dir');
 
 const excel2csv = async (excelPath) => {
 
@@ -22,40 +17,7 @@ const excel2csv = async (excelPath) => {
   return csv.endsWith("\r\n") || csv.endsWith("\n") ? csv : csv + "\r\n";
 };
 
-const main = async () => {
-  const promises = [];
-
-  for await (const file of klaw(join(__dirname, inputDir), { depthLimit: -1 })) {
-    if (file.path.endsWith(".xlsx")) {
-      const excelPath = file.path;
-      const csvPath = join(dirname(excelPath), `${basename(excelPath, ".xlsx")}.csv`);
-
-      promises.push((async () => {
-        try {
-          const csv = await excel2csv(excelPath);
-          await writeFile(csvPath, csv);
-        } catch (err) {
-
-          core.setFailed(`Error: Excel ファイル ${excelPath} を CSV に変換できませんでした。`);
-
-          if (err.message === "FILE_ENDED") {
-            core.setFailed("データが空になっているか、Excel ファイルが破損している可能性があります。");
-          }
-
-          throw err;
-        }
-      })());
-    }
-  }
-
-  await Promise.all(promises);
-}
-
-if (require.main === require.cache[eval('__filename')]) {
-  main();
-} else {
-  module.exports = { excel2csv };
-}
+module.exports = { excel2csv };
 
 
 /***/ }),
@@ -29018,12 +28980,50 @@ module.exports = require("util");
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(334);
-/******/ 	module.exports = __webpack_exports__;
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+const core = __nccwpck_require__(540);
+const { excel2csv } = __nccwpck_require__(321);
+const { writeFile } = __nccwpck_require__(292);
+const klaw = __nccwpck_require__(370);
+const { basename, dirname, join } = __nccwpck_require__(17);
+const inputDir = core.getInput('input_dir');
+
+const main = async () => {
+  const promises = [];
+
+  for await (const file of klaw(join(__dirname, inputDir), { depthLimit: -1 })) {
+
+    if (file.path.endsWith(".xlsx")) {
+      const excelPath = file.path;
+      const csvPath = join(dirname(excelPath), `${basename(excelPath, ".xlsx")}.csv`);
+
+      promises.push((async () => {
+        try {
+          const csv = await excel2csv(excelPath);
+          await writeFile(csvPath, csv);
+        } catch (err) {
+
+          core.setFailed(`Error: Excel ファイル ${excelPath} を CSV に変換できませんでした。`);
+
+          if (err.message === "FILE_ENDED") {
+            core.setFailed("データが空になっているか、Excel ファイルが破損している可能性があります。");
+          }
+
+          throw err;
+        }
+      })());
+    }
+  }
+
+  await Promise.all(promises);
+}
+
+main();
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;

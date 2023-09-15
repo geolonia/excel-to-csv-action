@@ -1,25 +1,15 @@
 const core = require('@actions/core');
+const { excel2csv } = require('./excel2csv');
 const { writeFile } = require('fs/promises');
 const klaw = require('klaw');
 const { basename, dirname, join } = require('path');
-const XLSX = require('xlsx');
 const inputDir = core.getInput('input_dir');
-
-const excel2csv = async (excelPath) => {
-
-  const workbook = XLSX.readFile(excelPath, {cellNF: true, cellText: true, cellDates: true});
-  const sheetName = workbook.SheetNames[0];
-  const sheet = workbook.Sheets[sheetName];
-
-  const csv = XLSX.utils.sheet_to_csv(sheet, { FS: ',', RS: '\r\n', blankrows: false, forceQuotes: true});
-
-  return csv.endsWith("\r\n") || csv.endsWith("\n") ? csv : csv + "\r\n";
-};
 
 const main = async () => {
   const promises = [];
 
   for await (const file of klaw(join(__dirname, inputDir), { depthLimit: -1 })) {
+
     if (file.path.endsWith(".xlsx")) {
       const excelPath = file.path;
       const csvPath = join(dirname(excelPath), `${basename(excelPath, ".xlsx")}.csv`);
@@ -45,8 +35,4 @@ const main = async () => {
   await Promise.all(promises);
 }
 
-if (require.main === module) {
-  main();
-} else {
-  module.exports = { excel2csv };
-}
+main();
