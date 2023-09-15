@@ -8,9 +8,11 @@ const inputDir = core.getInput('input_dir');
 const main = async () => {
   const promises = [];
 
-  console.log(join(__dirname, inputDir));
+  const workspace = process.env.GITHUB_WORKSPACE;
+  console.log(workspace)
+  console.log(join(workspace, inputDir));
 
-  for await (const file of klaw(join(__dirname, inputDir), { depthLimit: -1 })) {
+  for await (const file of klaw(join(workspace, inputDir), { depthLimit: -1 })) {
 
     console.log(file.path);
 
