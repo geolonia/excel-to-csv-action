@@ -8,7 +8,11 @@ const inputDir = core.getInput('input_dir');
 const main = async () => {
   const promises = [];
 
+  console.log(join(__dirname, inputDir));
+
   for await (const file of klaw(join(__dirname, inputDir), { depthLimit: -1 })) {
+
+    console.log(file.path);
 
     if (file.path.endsWith(".xlsx")) {
       const excelPath = file.path;
