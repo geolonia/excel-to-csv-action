@@ -9,12 +9,8 @@ const main = async () => {
   const promises = [];
 
   const workspace = process.env.GITHUB_WORKSPACE;
-  console.log(workspace)
-  console.log(join(workspace, inputDir));
 
   for await (const file of klaw(join(workspace, inputDir), { depthLimit: -1 })) {
-
-    console.log(file.path);
 
     if (file.path.endsWith(".xlsx")) {
       const excelPath = file.path;
