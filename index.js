@@ -1,3 +1,4 @@
+const core = require('@actions/core');
 const { writeFile } = require('fs/promises');
 const klaw = require('klaw');
 const { basename, dirname, join } = require('path');
