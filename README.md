@@ -27,3 +27,18 @@ jobs:
         with:
           input_dir: './data' # [Required] The directory containing the Excel files to convert.
 ```
+
+
+## Development
+
+```
+$ git clone git@github.com:geolonia/excel-to-csv-action.git
+$ cd excel-to-csv-action
+$ npm install
+```
+
+### Build
+
+```
+$ npm run build
+```
