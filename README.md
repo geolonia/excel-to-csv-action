@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: 'Convert Excel to CSV'
-        uses: geolonia/excel-to-csv-action@vmain
+        uses: geolonia/excel-to-csv-action@main
         with:
           input_dir: './data' # [Required] The directory containing the Excel files to convert.
 ```
