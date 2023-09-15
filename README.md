@@ -28,6 +28,9 @@ jobs:
           input_dir: './data' # [Required] The directory containing the Excel files to convert.
 ```
 
+## Note
+* Values output as CSV will be the values specified in the Excel cell format.
+* For dates (cell format: date, user-defined), the values are output to CSV in `m/d/yy` format. 
 
 ## Development
 
@@ -42,3 +45,5 @@ $ npm install
 ```
 $ npm run build
 ```
+
+
