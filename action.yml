@@ -1,0 +1,11 @@
+name: 'Excel to CSV Converter'
+description: 'Converts Excel files to CSV'
+author: 'Geolonia'
+inputs:
+  input_dir:
+    description: 'Input directory where Excel files are placed'
+    required: true
+    default: './'
+runs:
+  using: 'node16'
+  main: 'index.js'
